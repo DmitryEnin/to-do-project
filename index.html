@@ -357,22 +357,30 @@
       //Date Picker for Add New Task form
       $(function () {
         $('#addDatepicker').datepicker({
+          startDate: new Date(),
+          daysOfWeekHighlighted: "0,6",
+          language: 'en',
           format: 'dd-mm-yyyy',
           container: '#addDatepicker',
           orientation: 'auto top',
           todayHighlight: true,
-          autoclose: true
+          autoclose: true,
+          // daysOfWeekDisabled: [0, 6],
         });
       });
 
        //Date Picker for Edit a Task form
       $(function () {
         $('#editDatepicker').datepicker({
+          startDate: new Date(),
+          daysOfWeekHighlighted: "0,6",
+          language: 'en',
           format: 'dd-mm-yyyy',
           container: '#editDatepicker',
           orientation: 'auto top',
           todayHighlight: true,
-          autoclose: true
+          autoclose: true,
+          // daysOfWeekDisabled: [0, 6],
         });
       });
     </script>
