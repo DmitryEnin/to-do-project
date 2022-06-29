@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>To Do List</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+  </head>
+
+
+
+
+  <body> 
+
+    <div class="container center" style="border: solid black 1px; width: 375px; height: 600px">
+
+        <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"
+      ></script>
+  
+      
+      
+      <!--<nav class="navbar navbar-light bg-light">
+          <span class="navbar-brand mb-0 h1"><a href=""><i class="fa far-aerow-left"></i></a></span><h4>TO Do List</h4>
+          <button type="button" class="btn btn-link"></button>
+      </nav> -->
+      
+      <nav class="navbar sticky-top navbar-light bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="nav-link" href="./index.html">  
+                        <button type="button" class="btn btn-outline-dark"><i class="fa fa-arrow-left" style="color: aliceblue;"></i>&#8592;</button>
+                    </a>
+
+                    <span class="navbar-brand mb-0 h1">To Do List</span>
+                </div>
+            </div>
+        </div>
+      </nav>
+      
+      <div class="container center">
+            <div class="row">
+                <h5>
+                    <a>MONTHLY</a>
+                    <a style="float: right;" class="nav-link" href="./daily.html">DAILY</a>
+                </h5>
+            </div>
+
+            <div class="row">
+                <h6>Calender</h6>
+                <table id="Calendar" style="border: solid black 1px; width: 15rem; height: 10rem">
+      
+                    <tr>
+                    <th colspan="100%">June 2022</th>
+                    </tr>
+                    
+                    <tr>
+                    <th>Su</th>
+                    <th>Mo</th>
+                    <th>Tu</th>
+                    <th>We</th>
+                    <th>Th</th>
+                    <th>Fr</th>
+                    <th>Sa</th>
+                    </tr>
+                    
+                    <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    </tr>
+                    
+                    <tr>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+                    <td>11</td>
+                    </tr>
+                    
+                    <tr>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    </tr>
+                    
+                    <tr>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>21</td>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                    <td>25</td>
+                    </tr>
+                    
+                    <tr>
+                    <td>26</td>
+                    <td>27</td>
+                    <td>28</td>
+                    <td>29</td>
+                    <td>30</td>
+                    </tr>
+                    
+                    </table>
+            </div>
+        
+          </div>
+          <br />
+      
+      
+      
+          <div class="row">
+              <p>To Do List 
+          <button 
+            style=" float: right; width: auto; height: 2rem;" 
+            type="button" 
+            class="btn btn-secondary btn-m">Add New Task
+          </button></p>
+          </div>
+
+
+
+          <!-- //////////////// -->
+        
+          <!-- //////////////// -->
+          
+      
+          <p><b>Junary</b></p>
+      
+          <div class="card" style="width: 90%; height: auto;">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" id="row1"><a>Finish Homework</a>
+                    <div style="float: right;"><button style="height: 1.8rem;" type="button" class="btn btn-danger" onclick="deleteRow(this)">
+                        <i class="fa fa-trash"></i>Delete</button>
+                        <button style="height: 1.8rem;" type="button" class="btn btn-primary">
+                        <i class="fa fa-edit"></i> Edit</button>
+                    </div>
+                </li>
+
+                <li class="list-group-item" id="row2"><a>Running</a>
+                    <div style="float: right;"><button style="height: 1.8rem;" type="button" class="btn btn-danger" onclick="deleteRow(this)">
+                        <i class="fa fa-trash"></i>Delete</button>
+                        <button style="height: 1.8rem;" type="button" class="btn btn-primary">
+                        <i class="fa fa-edit"></i> Edit</button>
+                    </div>
+                </li>
+                
+                <li class="list-group-item" id="row3"><a>Food Shopping</a>
+                    <div style="float: right;"><button style="height: 1.8rem;" type="button" class="btn btn-danger" onclick="deleteRow(this)">
+                        <i class="fa fa-trash"></i>Delete</button>
+                        <button style="height: 1.8rem;" type="button" class="btn btn-primary">
+                        <i class="fa fa-edit"></i> Edit</button>
+                    </div>
+                </li>
+
+                <li class="list-group-item" id="row4"><a>Meet John</a>
+                    <div style="float: right;"><button style="height: 1.8rem;" type="button" class="btn btn-danger" onclick="deleteRow(this)">
+                        <i class="fa fa-trash"></i>Delete</button>
+                        <button style="height: 1.8rem;" type="button" class="btn btn-primary">
+                        <i class="fa fa-edit"></i> Edit</button>
+                    </div>
+                </li>
+
+
+
+
+               <!-- <li class="list-group-item" id="row4"><div class="input-group">
+
+                    <textarea type="text" 
+                   name="message" 
+                   id="message" 
+                   aria-placeholder="top-left"
+                   style="height: 2rem; width: 7rem;"
+                   value="Add a massage here"
+                   onclick="this.value= '' "
+                   rows="30" 
+                   cols="30">Add a massage here
+                </textarea>
+                  </div>
+                    <div style="float: right;"><button 
+                        style="height: 1.8rem;" 
+                        type="button" 
+                        class="btn btn-danger">
+                        <i class="fa fa-trash"></i>Delete</button>
+                        <button 
+                        style="height: 1.8rem;" 
+                        type="button" 
+                        class="btn btn-primary">
+                        <i class="fa fa-edit"></i> Edit</button>
+                    </div> 
+                </li>-->
+
+                
+              </ul>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+body {
+    position: relative;
+    min-height: 100vh;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+small {
+    color : #db4d4d;
+    text-align: left;
+    display: block;
+}
+
+.boxShadow{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#addResetBtn, #addSubmitBtn, #editResetBtn, #editSaveBtn  {
+    background-color: #e2e2e2;
+    font-weight: bold;
+    padding: 0.5rem 1.5rem;
+}
+
+.taskStatus {
+    padding: 6px 1rem;
+    background-color: rgb(134, 134, 134);
+    color: #fff;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+}
+
+.delete, .edit {
+    background-color: #e2e2e2;
+    font-weight: bold;
+}
+
+.addRemoveFocus:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.editRemoveFocus:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: #e2e2e2;
+}
+
+.blue, .green, .red, .orange{
+    padding: 0 0.7rem 3px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.red {
+    background-color: #db4d4d;
+}
+
+.orange {
+    background-color: #e28d43;
+}
+
+.blue {
+    background-color: #659fd5;
+}
+
+.green {
+    background-color: #77d278;
+}
+
+.todoHeading {
+    background-color: #db4d4d;
+    font-size: 1.8rem;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.inProgressHeading {
+    background-color: #e28d43;
+    font-size: 1.8rem;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.reviewHeading {
+    background-color: #659fd5;
+    font-size: 1.8rem;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.doneHeading {
+    background-color: #77d278;
+    font-size: 1.8rem;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.datepicker table tr td.today, .datepicker table tr td.today.disabled, .datepicker table tr td.today.disabled:hover, .datepicker table tr td.today:hover {
+    background-image: none;
+    background-color: #ffae1d;
+    color: #fff;
+}
+
+@media only screen and (max-width: 1430px){
+    .delete, .taskStatus, .edit {
+        padding: 4px 6px;
+    }
+}
+
+@media only screen and (max-width: 1300px){
+    .taskStatus {
+        padding: 6px 0.5rem;
+        letter-spacing: 0;
+        font-weight: normal;
+        font-size: 0.9rem;
+    }
+}
+
+@media only screen and (max-width: 1199px){
+    .edit {
+        padding: 6px 1.5rem;
+    }
+}
+
+/* #a8a8a8
+#eed144 */
