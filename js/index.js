@@ -23,6 +23,45 @@ let editBtn = document.getElementsByClassName('editBtn');
 const showDate = document.querySelector('#showDate');
 const showTime = document.querySelector('#showTime');
 
+// new list group
+const todoColumn = document.querySelector('#todoColumn');
+const inProgressColumn = document.querySelector('#inProgressColumn');
+const reviewColumn = document.querySelector('#reviewColumn');
+const doneColumn = document.querySelector('#doneColumn');
+
+// task class
+class Task {
+  constructor(id, name, description, assignedTo, dueDate, status) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.assignedTo = assignedTo;
+    this.dueDate = dueDate;
+    this.status = status;
+  }
+}
+//task manager add the card
+class TaskManager {
+  static displayTaskListToUI() {
+    const tasks = taskArray;
+    console.log(tasks);
+    tasks.forEach(task => TaskManager.render(task));
+  }
+//method for status column
+static addToStatusColumn(status) {
+  switch (status) {
+    case 'todo':
+      return todoColumn;
+    case 'in progress':
+      return inProgressColumn;
+    case 'review':
+      return reviewColumn;
+    case 'done':
+      return doneColumn;
+  }
+}
+
+//validation part
 class Validation {
   static isRequired(input) {
     return input === '' ? false : true;
