@@ -92,7 +92,7 @@ class TaskManager {
     console.log(tasks);
     tasks.forEach(task => TaskManager.render(task));
   }
-//method for status column
+  //method for status column
 static addToStatusColumn(status) {
   switch (status) {
     case 'todo':
@@ -105,6 +105,8 @@ static addToStatusColumn(status) {
       return doneColumn;
   }
 }
+}
+
 
 //validation part
 class Validation {
