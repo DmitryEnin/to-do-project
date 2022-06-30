@@ -213,124 +213,32 @@
 
       <!-- -------------------------------------------------------List group------------------------------------------------------- -->
       <div class="container-fluid pt-4 pb-5 px-5">
-
-        <!-- <div class="row gy-5" id="showTaskList"></div> -->
         <div class="row gy-3 pb-5" id="showTaskList">
           <div class="col col-sm-12 col-md-6 col-lg-6 col-xl-3">
             <div class="border border-dark py-4 mb-2 rounded todoHeading">To do</div>
             <div id="todoColumn">
-              <!-- Start div -->
-              <div class='col-12 text-start mb-2'>
-                <div class='card border-secondary'>
-                  <div class='card-body boxShadow'>
-                    <h5 class='card-title fs-4 pb-3 text-capitalize'>Meet team</h5>
-                    <p class='card-text pb-3 text-capitalize'>Meet the team for standup meeting at 9.15AM</p>
-                    <p class='card-text text-capitalize'><span class='fw-bold pe-3'>Assigned to :</span>John Wayne</p>
-                    <p class='card-text'><span class='fw-bold pe-3'>Due Date :</span>07 June 2022</p>
-                    <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class="red">Todo</span></p>
-                    <div class='col d-flex justify-content-between align-items-center'>
-                      <!-- <div style='display:none'>${task.id}</div> -->
-                      <button class='btn border-dark delete' type='submit'>Delete</button>
-                      <button type='button' class='btn border border-dark taskStatus'>Mark as Done</button>
-                      <button class='btn border border-dark edit editRemoveFocus' type='submit' data-bs-toggle='modal' data-bs-target='#staticEditBackdrop'>Edit</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class='col-12 text-start mb-2'>
-                <div class='card border-secondary'>
-                  <div class='card-body boxShadow'>
-                    <h5 class='card-title fs-4 pb-3 text-capitalize'>Go to the bank</h5>
-                    <p class='card-text pb-3 text-capitalize'>Meet the team for standup meeting at 9.15AM</p>
-                    <p class='card-text text-capitalize'><span class='fw-bold pe-3'>Assigned to :</span>John Wayne</p>
-                    <p class='card-text'><span class='fw-bold pe-3'>Due Date :</span>07 June 2022</p>
-                    <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class="red">To do</span></p>
-                    <div class='col d-flex justify-content-between align-items-center'>
-                      <!-- <div style='display:none'>${task.id}</div> -->
-                      <button class='btn border-dark delete' type='submit'>Delete</button>
-                      <button type='button' class='btn border border-dark taskStatus'>Mark as Done</button>
-                      <button class='btn border border-dark edit editRemoveFocus' type='submit' data-bs-toggle='modal' data-bs-target='#staticEditBackdrop'>Edit</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- End div -->
+              <!-- Task will be added here -->
             </div>
           </div>
           <div class="col col-sm-12 col-md-6 col-lg-6 col-xl-3 ">
             <div class="border border-dark py-4 mb-2 rounded inProgressHeading">In Progress</div>
             <div id="inProgressColumn">
-              <div class='col-12 text-start mb-2'>
-                <div class='card border-secondary'>
-                  <div class='card-body boxShadow'>
-                    <h5 class='card-title fs-4 pb-3 text-capitalize'>Pay the gas bill</h5>
-                    <p class='card-text pb-3 text-capitalize'>Meet the team for standup meeting at 9.15AM</p>
-                    <p class='card-text text-capitalize'><span class='fw-bold pe-3'>Assigned to :</span>John Wayne</p>
-                    <p class='card-text'><span class='fw-bold pe-3'>Due Date :</span>07 June 2022</p>
-                    <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class="orange">In Progress</span></p>
-                    <div class='col d-flex justify-content-between align-items-center'>
-                      <!-- <div style='display:none'>${task.id}</div> -->
-                      <button class='btn border-dark delete' type='submit'>Delete</button>
-                      <button type='button' class='btn border border-dark taskStatus'>Mark as Done</button>
-                      <button class='btn border border-dark edit editRemoveFocus' type='submit' data-bs-toggle='modal' data-bs-target='#staticEditBackdrop'>Edit</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <!-- Task will be added here -->
             </div>
           </div>
           <div class="col col-sm-12 col-md-6 col-lg-6 col-xl-3">
             <div class="border border-dark py-4 mb-2 rounded reviewHeading">Review</div>
             <div id="reviewColumn">
-              <div class='col-12 text-start mb-2'>
-                <div class='card border-secondary'>
-                  <div class='card-body boxShadow'>
-                    <h5 class='card-title fs-4 pb-3 text-capitalize'>Food Shopping</h5>
-                    <p class='card-text pb-3 text-capitalize'>Meet the team for standup meeting at 9.15AM</p>
-                    <p class='card-text text-capitalize'><span class='fw-bold pe-3'>Assigned to :</span>John Wayne</p>
-                    <p class='card-text'><span class='fw-bold pe-3'>Due Date :</span>07 June 2022</p>
-                    <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class="blue">Review</span></p>
-                    <div class='col d-flex justify-content-between align-items-center'>
-                      <!-- <div style='display:none'>${task.id}</div> -->
-                      <button class='btn border-dark delete' type='submit'>Delete</button>
-                      <button type='button' class='btn border border-dark taskStatus'>Mark as Done</button>
-                      <button class='btn border border-dark edit editRemoveFocus' type='submit' data-bs-toggle='modal' data-bs-target='#staticEditBackdrop'>Edit</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <!-- Task will be added here -->
             </div>
           </div>
           <div class="col col-sm-12 col-md-6 col-lg-6 col-xl-3">
             <div class="border border-dark py-4 mb-2 rounded doneHeading">Done</div>
             <div id="doneColumn">
-              <div class='col-12 text-start mb-2'>
-                <div class='card border-secondary'>
-                  <div class='card-body boxShadow'>
-                    <h5 class='card-title fs-4 pb-3 text-capitalize'>School Pickup</h5>
-                    <p class='card-text pb-3 text-capitalize'>Meet the team for standup meeting at 9.15AM</p>
-                    <p class='card-text text-capitalize'><span class='fw-bold pe-3'>Assigned to :</span>John Wayne</p>
-                    <p class='card-text'><span class='fw-bold pe-3'>Due Date :</span>07 June 2022</p>
-                    <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class="green">Done</span></p>
-                    <div class='col d-flex justify-content-between align-items-center'>
-                      <!-- <div style='display:none'>${task.id}</div> -->
-                      <button class='btn border-dark delete' type='submit'>Delete</button>
-                      <button type='button' class='btn border border-dark taskStatus'>Mark as Done</button>
-                      <button class='btn border border-dark edit editRemoveFocus' type='submit' data-bs-toggle='modal' data-bs-target='#staticEditBackdrop'>Edit</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <!-- Task will be added here -->
             </div>
           </div>
         </div>
-
-
-
-
-
-        <!-- <ul class="list-group list-group-flush text-start row" id="showTaskList">
-        </ul> -->
       </div>
        <!-- End of List group -->
 
