@@ -193,6 +193,7 @@ class Validation {
     const min = 15;
     const description = editInputDescription.value.trim();
 
+    
     if (!Validation.isRequired(description)) {
       Validation.showError(
         editInputDescription,
