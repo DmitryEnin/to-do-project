@@ -29,6 +29,51 @@ const inProgressColumn = document.querySelector('#inProgressColumn');
 const reviewColumn = document.querySelector('#reviewColumn');
 const doneColumn = document.querySelector('#doneColumn');
 
+//new taskArray
+let taskArray = [
+  {
+    id: '1',
+    name: 'zoom meeting with team',
+    description: 'at 9.15AM',
+    assignedTo: 'my team',
+    dueDate: '07-15-2022',
+    status: 'todo',
+  },
+  {
+    id: '2',
+    name: 'book a hotel',
+    description: 'in the Gold Coast for a birthday',
+    assignedTo: 'my birthday',
+    dueDate: '07-20-2022',
+    status: 'in progress',
+  },
+  {
+    id: '3',
+    name: 'shopping',
+    description: 'check what to buy and make a list',
+    assignedTo: 'my birthday',
+    dueDate: '07-21-2022',
+    status: 'review',
+  },
+  {
+    id: '4',
+    name: 'car registration',
+    description: 'pay for car registration',
+    assignedTo: 'car',
+    dueDate: '06-20-2022',
+    status: 'done',
+  },
+  {
+    id: '5',
+    name: 'pick up from school',
+    description: 'have to arrive at 5.15PM',
+    assignedTo: 'mark timber',
+    dueDate: '07-06-2022',
+    status: 'done',
+  },
+];
+
+
 // task class
 class Task {
   constructor(id, name, description, assignedTo, dueDate, status) {
@@ -331,35 +376,35 @@ class Validation {
     }
   }
 
-  static showError(input, message) {
-    const formField = input.parentElement;
-    const small = formField.querySelector('small');
-    small.textContent = message;
+    static showError(input, message) {
+      const formField = input.parentElement;
+      const small = formField.querySelector('small');
+      small.textContent = message;
+    }
+
+    static showSuccess(input) {
+      const formfield = input.parentElement;
+      const small = formfield.querySelector('small');
+      small.textContent = '';
+    }
+
+    static resetAddFormFields() {
+      Validation.showSuccess(addInputName);
+      Validation.showSuccess(addInputDescription);
+      Validation.showSuccess(addInputAssignedTo);
+      Validation.showSuccess(addInputDueDate);
+      Validation.showSuccess(addInputStatus);
+      formAddTask.reset();
+    }
   }
 
-  static showSuccess(input) {
-    const formfield = input.parentElement;
-    const small = formfield.querySelector('small');
-    small.textContent = '';
-  }
-
-  static resetAddFormFields() {
-    Validation.showSuccess(addInputName);
-    Validation.showSuccess(addInputDescription);
-    Validation.showSuccess(addInputAssignedTo);
-    Validation.showSuccess(addInputDueDate);
-    Validation.showSuccess(addInputStatus);
-    formAddTask.reset();
-  }
-}
-
-// Utility Class: Provides Utility Methods
-class Utility {
-  static showDate() {
-    const date = new Date();
-    const today =
-      date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-    // const dateTextNode = document.createTextNode(today);
+  // Utility Class: Provides Utility Methods
+  class Utility {
+    static showDate() {
+      const date = new Date();
+      const today =
+        date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+      // const dateTextNode = document.createTextNode(today);
 
     const myDateSpan = document.createElement('span');
     myDateSpan.textContent = today;
@@ -374,6 +419,21 @@ class Utility {
     myTimeSpan.textContent = date.toLocaleTimeString();
     return myTimeSpan;
   }
+
+
+  static checkColor(static) {
+    switch (static) {
+      case 'todo':
+        return 'red';
+      case 'done':
+        return 'green';
+      case 'in progress':
+        return 'orange';
+      case 'review':
+        return 'blue';
+    }
+  }
+
 }
 
 //////////////////////////////////////////////////// All event section /////////////////////////////////////////////////////
