@@ -23,56 +23,13 @@ let editBtn = document.getElementsByClassName('editBtn');
 const showDate = document.querySelector('#showDate');
 const showTime = document.querySelector('#showTime');
 
+// new list group
 const todoColumn = document.querySelector('#todoColumn');
 const inProgressColumn = document.querySelector('#inProgressColumn');
 const reviewColumn = document.querySelector('#reviewColumn');
 const doneColumn = document.querySelector('#doneColumn');
 
-// Create the id
-let myID = 0;
-let taskArray = [
-  {
-    id: '1',
-    name: 'meet team',
-    description: 'at the office at 10.30AM',
-    assignedTo: 'john wayne',
-    dueDate: '08-06-2022',
-    status: 'todo',
-  },
-  {
-    id: '2',
-    name: 'pay the gas bill',
-    description: 'pay for 3 months',
-    assignedTo: 'Sarah Brown',
-    dueDate: '09-06-2022',
-    status: 'in progress',
-  },
-  {
-    id: '3',
-    name: 'food shopping',
-    description: 'need to check all lists',
-    assignedTo: 'jane jackson',
-    dueDate: '24-06-2022',
-    status: 'review',
-  },
-  {
-    id: '4',
-    name: 'go to the bank',
-    description: 'check all the accounts',
-    assignedTo: 'mark timber',
-    dueDate: '05-06-2022',
-    status: 'done',
-  },
-  {
-    id: '5',
-    name: 'pick up from school',
-    description: 'have to arrive at 5.15PM',
-    assignedTo: 'mark timber',
-    dueDate: '07-06-2022',
-    status: 'done',
-  },
-];
-
+// task class
 class Task {
   constructor(id, name, description, assignedTo, dueDate, status) {
     this.id = id;
@@ -83,127 +40,29 @@ class Task {
     this.status = status;
   }
 }
-
+//task manager add the card
 class TaskManager {
-  static getAllTasks() {
+  static displayTaskListToUI() {
     const tasks = taskArray;
     console.log(tasks);
     tasks.forEach(task => TaskManager.render(task));
   }
-
-  static getTasksWithStatus(status) {
-    const allTasksWithSameStatus = taskArray.filter(
-      task => task.status === status
-    );
-    console.log(allTasksWithSameStatus);
-  }
-
-  static addTask(task) {
-    taskArray.push(task);
-    console.log({ taskArray });
-  }
-
-  static createTaskHTML(task) {
-    TaskManager.render(task);
-  }
-
-  static render(task) {
-    const divElement = document.createElement('div');
-    divElement.classList.add('col-12', 'text-start', 'mb-2');
-    divElement.innerHTML = `<div class='card border-secondary'>
-    <div class='card-body boxShadow'>
-      <h5 class='card-title fs-4 pb-3 text-capitalize'>${task.name}</h5>
-      <p class='card-text pb-3 firstLetter'>${task.description}</p>
-      <p class='card-text text-capitalize'><span class='fw-bold pe-3'>Assigned to :</span>${
-        task.assignedTo
-      }</p>
-      <p class='card-text'><span class='fw-bold pe-3'>Due Date :</span>${
-        task.dueDate
-      }</p>
-      <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class=${Utility.checkColor(
-        task.status
-      )}>${task.status}</span></p>
-      <div class='col d-flex justify-content-between align-items-center'>
-        <div style='display:none'>${task.id}</div>
-        <button class='btn border-dark delete' type='submit'>Delete</button>
-        ${
-          task.status === 'done'
-            ? `<span></span>`
-            : `<button type='button' class='btn border border-dark taskStatus'>Mark as Done</button>`
-        }
-        <button class='btn border border-dark edit editRemoveFocus' type='submit' data-bs-toggle='modal' data-bs-target='#staticEditBackdrop'>Edit</button>
-      </div>
-    </div>
-</div>`;
-
-    let statusColumn = TaskManager.addToStatusColumn(task.status);
-    statusColumn.appendChild(divElement);
-  }
-
-  static addToStatusColumn(status) {
-    switch (status) {
-      case 'todo':
-        return todoColumn;
-      case 'in progress':
-        return inProgressColumn;
-      case 'review':
-        return reviewColumn;
-      case 'done':
-        return doneColumn;
-    }
-  }
-
-  static editTask(e) {
-    const taskId =
-      e.target.previousElementSibling.previousElementSibling
-        .previousElementSibling.textContent;
-    const editedTask = taskArray.filter(task => task.id === taskId);
-    editInputId.textContent = taskId;
-    editInputName.value = editedTask[0].name;
-    editInputDescription.value = editedTask[0].description;
-    editInputAssignedTo.value = editedTask[0].assignedTo;
-    editInputDueDate.value = editedTask[0].dueDate;
-    editInputStatus.value = editedTask[0].status;
-
-    editInputNamePrev = editedTask[0].name;
-    editInputDescriptionPrev = editedTask[0].description;
-    editInputAssignedToPrev = editedTask[0].assignedTo;
-    editInputDueDatePrev = editedTask[0].dueDate;
-    editInputStatusPrev = editedTask[0].status;
-  }
-
-  static saveEditedTask(e) {
-    e.preventDefault();
-    const taskId =
-      e.target.previousElementSibling.previousElementSibling.textContent;
-    taskArray.forEach(task => {
-      if (task.id === taskId) {
-        task.name = editInputName.value;
-        task.description = editInputDescription.value;
-        task.assignedTo = editInputAssignedTo.value;
-        task.dueDate = editInputDueDate.value;
-        task.status = editInputStatus.value;
-      }
-    });
-
-    console.log({ taskArray });
-    editSaveBtn.setAttribute('data-bs-dismiss', 'modal');
-    editSaveBtn.click();
-    (() => {
-      editSaveBtn.setAttribute('data-bs-dismiss', '');
-    })();
-  }
-
-  static resetEditedTask(e) {
-    e.preventDefault();
-    editInputName.value = editInputNamePrev;
-    editInputDescription.value = editInputDescriptionPrev;
-    editInputAssignedTo.value = editInputAssignedToPrev;
-    editInputDueDate.value = editInputDueDatePrev;
-    editInputStatus.value = editInputStatusPrev;
-  }
 }
+//method for status column
+// static addToStatusColumn(status) {
+//   switch (status) {
+//     case 'todo':
+//       return todoColumn;
+//     case 'in progress':
+//       return inProgressColumn;
+//     case 'review':
+//       return reviewColumn;
+//     case 'done':
+//       return doneColumn;
+//   }
+// }
 
+//validation part
 class Validation {
   static isRequired(input) {
     return input === '' ? false : true;
