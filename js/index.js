@@ -20,6 +20,12 @@ let editResetBtn = document.querySelector('#editResetBtn');
 let editCloseModal = document.querySelector('#editCloseModal');
 let editBtn = document.getElementsByClassName('editBtn');
 
+let editInputNamePrev;
+let editInputDescriptionPrev;
+let editInputAssignedToPrev;
+let editInputDueDatePrev;
+let editInputStatusPrev;
+
 const showDate = document.querySelector('#showDate');
 const showTime = document.querySelector('#showTime');
 
@@ -28,6 +34,9 @@ const todoColumn = document.querySelector('#todoColumn');
 const inProgressColumn = document.querySelector('#inProgressColumn');
 const reviewColumn = document.querySelector('#reviewColumn');
 const doneColumn = document.querySelector('#doneColumn');
+
+//Create ID
+let myID = 0;
 
 //new taskArray
 let taskArray = [
@@ -86,11 +95,60 @@ class Task {
 }
 //task manager add the card
 class TaskManager {
-  static displayTaskListToUI() {
+  static getAllTasks() {
     const tasks = taskArray;
-    console.log(tasks);
     tasks.forEach(task => TaskManager.render(task));
   }
+
+  static getTasksWithStatus(status) {
+    const allTasksWithSameStatus = taskArray.filter(
+      task => task.status === status
+    );
+  }
+
+  static addTask(task) {
+    taskArray.push(task);
+    console.log('A task added');
+    console.log({ taskArray });
+  }
+
+  static createTaskHTML(task) {
+    TaskManager.render(task);
+  }
+
+  static render(task) {
+    const divElement = document.createElement('div');
+    divElement.classList.add('col-12', 'text-start', 'mb-2');
+    divElement.innerHTML = `<div class='card border-secondary'>
+    <div class='card-body boxShadow'>
+      <h5 class='card-title fs-4 pb-3 text-capitalize'>${task.name}</h5>
+      <p class='card-text pb-3 firstLetter'>${task.description}</p>
+      <p class='card-text text-capitalize'><span class='fw-bold pe-3'>Assigned to :</span>${
+        task.assignedTo
+      }</p>
+      <p class='card-text'><span class='fw-bold pe-3'>Due Date :</span>${
+        task.dueDate
+      }</p>
+      <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class=${Utility.checkColor(
+        task.status
+      )}>${task.status}</span></p>
+      <div class='col d-flex justify-content-between align-items-center'>
+        <div style='display:none'>${task.id}</div>
+        <button class='btn border-dark delete' type='submit'>Delete</button>
+        ${
+          task.status === 'done'
+            ? `<span></span>`
+            : `<button type='button' class='btn border border-dark taskStatus'>Mark as Done</button>`
+        }
+        <button class='btn border border-dark edit editRemoveFocus' type='submit' data-bs-toggle='modal' data-bs-target='#staticEditBackdrop'>Edit</button>
+      </div>
+    </div>
+</div>`;
+
+    let statusColumn = TaskManager.addToStatusColumn(task.status);
+    statusColumn.appendChild(divElement);
+  }
+
   //method for status column
   static addToStatusColumn(status) {
     switch (status) {
@@ -103,6 +161,57 @@ class TaskManager {
       case 'done':
         return doneColumn;
     }
+  }
+
+  static editTask(e) {
+    const taskId =
+      e.target.previousElementSibling.previousElementSibling
+        .previousElementSibling.textContent;
+    const editedTask = taskArray.filter(task => task.id === taskId);
+    editInputId.textContent = taskId;
+    editInputName.value = editedTask[0].name;
+    editInputDescription.value = editedTask[0].description;
+    editInputAssignedTo.value = editedTask[0].assignedTo;
+    editInputDueDate.value = editedTask[0].dueDate;
+    editInputStatus.value = editedTask[0].status;
+
+    editInputNamePrev = editedTask[0].name;
+    editInputDescriptionPrev = editedTask[0].description;
+    editInputAssignedToPrev = editedTask[0].assignedTo;
+    editInputDueDatePrev = editedTask[0].dueDate;
+    editInputStatusPrev = editedTask[0].status;
+  }
+
+  static saveEditedTask(e) {
+    e.preventDefault();
+    const taskId =
+      e.target.previousElementSibling.previousElementSibling.textContent;
+    taskArray.forEach(task => {
+      if (task.id === taskId) {
+        task.name = editInputName.value;
+        task.description = editInputDescription.value;
+        task.assignedTo = editInputAssignedTo.value;
+        task.dueDate = editInputDueDate.value;
+        task.status = editInputStatus.value;
+      }
+    });
+    console.log('Edited a task');
+    console.log({ taskArray });
+
+    editSaveBtn.setAttribute('data-bs-dismiss', 'modal');
+    editSaveBtn.click();
+    (() => {
+      editSaveBtn.setAttribute('data-bs-dismiss', '');
+    })();
+  }
+
+  static resetEditedTask(e) {
+    e.preventDefault();
+    editInputName.value = editInputNamePrev;
+    editInputDescription.value = editInputDescriptionPrev;
+    editInputAssignedTo.value = editInputAssignedToPrev;
+    editInputDueDate.value = editInputDueDatePrev;
+    editInputStatus.value = editInputStatusPrev;
   }
 }
 
@@ -355,6 +464,7 @@ class Validation {
   }
 
   static validateEditTaskForm() {
+    let valid = false;
     let isNameValid = Validation.editCheckName(),
       isDescriptionValid = Validation.editCheckDescription(),
       isAssignedToValid = Validation.editCheckAssignedTo(),
@@ -376,7 +486,9 @@ class Validation {
       (() => {
         editSaveBtn.setAttribute('data-bs-dismiss', '');
       })();
+      valid = true;
     }
+    return valid;
   }
 
   static showError(input, message) {
@@ -403,6 +515,19 @@ class Validation {
 
 // Utility Class: Provides Utility Methods
 class Utility {
+  static create_UUID() {
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        var r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
+      }
+    );
+    return uuid;
+  }
+
   static showDate() {
     const date = new Date();
     const today =
@@ -423,8 +548,8 @@ class Utility {
     return myTimeSpan;
   }
 
-  static checkColor(static) {
-    switch (static) {
+  static checkColor(status) {
+    switch (status) {
       case 'todo':
         return 'red';
       case 'done':
@@ -461,17 +586,17 @@ formAddTask.addEventListener('submit', e => {
     const status = addInputStatus.value;
 
     // For JSON object
-    const taskJSON = {
-      id: id,
-      name: name,
-      description: description,
-      assignedTo: assignedTo,
-      dueDate: dueDate,
-      status: status,
-    };
+    // const taskJSON = {
+    //   id: id,
+    //   name: name,
+    //   description: description,
+    //   assignedTo: assignedTo,
+    //   dueDate: dueDate,
+    //   status: status,
+    // };
 
     //For Task Object
-    // const task = new Task(id, name, description, assignedTo, dueDate, status);
+    const task = new Task(id, name, description, assignedTo, dueDate, status);
 
     //Add a task object to taskArray
     TaskManager.addTask(task);
@@ -492,7 +617,15 @@ addCloseModal.addEventListener('click', Validation.resetAddFormFields);
 // Event: Save Edited Task
 editSaveBtn.addEventListener('click', e => {
   e.preventDefault();
-  Validation.validateEditTaskForm();
+  const isEditFormValid = Validation.validateEditTaskForm();
+  if (isEditFormValid) {
+    TaskManager.saveEditedTask(e);
+    todoColumn.innerHTML = '';
+    inProgressColumn.innerHTML = '';
+    reviewColumn.innerHTML = '';
+    doneColumn.innerHTML = '';
+    TaskManager.getAllTasks();
+  }
 });
 
 // Event: Reset to Prev Data of a Task
