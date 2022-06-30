@@ -29,6 +29,50 @@ const inProgressColumn = document.querySelector('#inProgressColumn');
 const reviewColumn = document.querySelector('#reviewColumn');
 const doneColumn = document.querySelector('#doneColumn');
 
+//new taskArray
+let taskArray = [
+  {
+    id: '1',
+    name: 'zoom meeting with team',
+    description: 'at 9.15AM',
+    assignedTo: 'my team',
+    dueDate: '07-15-2022',
+    status: 'todo',
+  },
+  {
+    id: '2',
+    name: 'book a hotel',
+    description: 'in the Gold Coast for a birthday',
+    assignedTo: 'my birthday',
+    dueDate: '07-20-2022',
+    status: 'in progress',
+  },
+  {
+    id: '3',
+    name: 'shopping',
+    description: 'check what to buy and make a list',
+    assignedTo: 'my birthday',
+    dueDate: '07-21-2022',
+    status: 'review',
+  },
+  {
+    id: '4',
+    name: 'car registration',
+    description: 'pay for car registration',
+    assignedTo: 'car',
+    dueDate: '06-20-2022',
+    status: 'done',
+  },
+  {
+    id: '5',
+    name: 'pick up from school',
+    description: 'have to arrive at 5.15PM',
+    assignedTo: 'mark timber',
+    dueDate: '07-06-2022',
+    status: 'done',
+  },
+];
+
 // task class
 class Task {
   constructor(id, name, description, assignedTo, dueDate, status) {
@@ -47,20 +91,20 @@ class TaskManager {
     console.log(tasks);
     tasks.forEach(task => TaskManager.render(task));
   }
+  //method for status column
+  static addToStatusColumn(status) {
+    switch (status) {
+      case 'todo':
+        return todoColumn;
+      case 'in progress':
+        return inProgressColumn;
+      case 'review':
+        return reviewColumn;
+      case 'done':
+        return doneColumn;
+    }
+  }
 }
-//method for status column
-// static addToStatusColumn(status) {
-//   switch (status) {
-//     case 'todo':
-//       return todoColumn;
-//     case 'in progress':
-//       return inProgressColumn;
-//     case 'review':
-//       return reviewColumn;
-//     case 'done':
-//       return doneColumn;
-//   }
-// }
 
 //validation part
 class Validation {
@@ -359,19 +403,6 @@ class Validation {
 
 // Utility Class: Provides Utility Methods
 class Utility {
-  static create_UUID() {
-    var dt = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        var r = (dt + Math.random() * 16) % 16 | 0;
-        dt = Math.floor(dt / 16);
-        return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
-      }
-    );
-    return uuid;
-  }
-
   static showDate() {
     const date = new Date();
     const today =
@@ -392,8 +423,8 @@ class Utility {
     return myTimeSpan;
   }
 
-  static checkColor(status) {
-    switch (status) {
+  static checkColor(static) {
+    switch (static) {
       case 'todo':
         return 'red';
       case 'done':
