@@ -35,8 +35,8 @@ const inProgressColumn = document.querySelector('#inProgressColumn');
 const reviewColumn = document.querySelector('#reviewColumn');
 const doneColumn = document.querySelector('#doneColumn');
 
-//Create ID
-let myID = 0;
+//Create ID (Not use, for unique reason on localStotage)
+// let myID = 0;
 
 //new taskArray
 let taskArray = [
@@ -95,19 +95,41 @@ class Task {
 }
 //task manager add the card
 class TaskManager {
-  static getAllTasks() {
-    const tasks = taskArray;
-    tasks.forEach(task => TaskManager.render(task));
+  static getTaskListFromLocalStorage() {
+    let taskList = localStorage.getItem('taskList');
+    if (taskList === null) {
+      taskList = [];
+    } else {
+      taskList = JSON.parse(taskList);
+    }
+    return taskList;
   }
+
+  static getAllTasks() {
+    // const tasks = taskArray;
+    const tasks = TaskManager.getTaskListFromLocalStorage();
+    tasks.forEach(task => TaskManager.render(task));
+    console.log({ tasks });
+  }
+
+  // static addTaskToLocalStorage(task) {
+  //   const taskList = TaskManager.getTaskListFromLocalStorage();
+  //   taskList.push(task);
+  //   localStorage.setItem('taskList', JSON.stringify(taskList));
+  // }
 
   static getTasksWithStatus(status) {
     const allTasksWithSameStatus = taskArray.filter(
       task => task.status === status
     );
+    console.log({ allTasksWithSameStatus });
   }
 
   static addTask(task) {
-    taskArray.push(task);
+    // taskArray.push(task);
+    const taskList = TaskManager.getTaskListFromLocalStorage();
+    taskList.push(task);
+    localStorage.setItem('taskList', JSON.stringify(taskList));
     console.log('A task added');
     console.log({ taskArray });
   }
@@ -167,7 +189,13 @@ class TaskManager {
     const taskId =
       e.target.previousElementSibling.previousElementSibling
         .previousElementSibling.textContent;
-    const editedTask = taskArray.filter(task => task.id === taskId);
+    console.log({ taskId });
+
+    // const editedTask = taskArray.filter(task => task.id === taskId);
+    let taskList = localStorage.getItem('taskList');
+    taskList = JSON.parse(taskList);
+    const editedTask = taskList.filter(task => task.id === taskId);
+
     editInputId.textContent = taskId;
     editInputName.value = editedTask[0].name;
     editInputDescription.value = editedTask[0].description;
@@ -186,7 +214,23 @@ class TaskManager {
     e.preventDefault();
     const taskId =
       e.target.previousElementSibling.previousElementSibling.textContent;
-    taskArray.forEach(task => {
+
+    // taskArray.forEach(task => {
+    //   if (task.id === taskId) {
+    //     task.name = editInputName.value;
+    //     task.description = editInputDescription.value;
+    //     task.assignedTo = editInputAssignedTo.value;
+    //     task.dueDate = editInputDueDate.value;
+    //     task.status = editInputStatus.value;
+    //   }
+    // });
+
+    // console.log('Edited a task');
+    // console.log({ taskArray });
+
+    let taskList = localStorage.getItem('taskList');
+    taskList = JSON.parse(taskList);
+    taskList.forEach(task => {
       if (task.id === taskId) {
         task.name = editInputName.value;
         task.description = editInputDescription.value;
@@ -195,11 +239,14 @@ class TaskManager {
         task.status = editInputStatus.value;
       }
     });
-    console.log('Edited a task');
-    console.log({ taskArray });
 
+    console.log({ taskList });
+    localStorage.setItem('taskList', JSON.stringify(taskList));
+
+    // To fix the Modal from not closing after click Save button (from e.preventDefault());
     editSaveBtn.setAttribute('data-bs-dismiss', 'modal');
     editSaveBtn.click();
+    // To remove this attribute from the modal (IIFE)
     (() => {
       editSaveBtn.setAttribute('data-bs-dismiss', '');
     })();
@@ -212,6 +259,42 @@ class TaskManager {
     editInputAssignedTo.value = editInputAssignedToPrev;
     editInputDueDate.value = editInputDueDatePrev;
     editInputStatus.value = editInputStatusPrev;
+  }
+
+  static changeTaskStatus(e) {
+    const taskId =
+      e.target.previousElementSibling.previousElementSibling.textContent;
+    console.log({ taskId });
+    let taskList = localStorage.getItem('taskList');
+    taskList = JSON.parse(taskList);
+    taskList.forEach(task => {
+      if (task.id === taskId) {
+        task.status = 'done';
+      }
+    });
+    console.log(taskList);
+    localStorage.setItem('taskList', JSON.stringify(taskList));
+    //
+    todoColumn.innerHTML = '';
+    inProgressColumn.innerHTML = '';
+    reviewColumn.innerHTML = '';
+    doneColumn.innerHTML = '';
+    TaskManager.getAllTasks();
+  }
+
+  static removeTaskFromUI(elementTarget) {
+    if (elementTarget.classList.contains('delete')) {
+      elementTarget.parentElement.parentElement.parentElement.parentElement.remove();
+    }
+  }
+
+  static removeTaskFromLocalStorage(e) {
+    let tasks = TaskManager.getTaskListFromLocalStorage();
+    const idOfElement = e.target.previousElementSibling.textContent;
+
+    tasks = tasks.filter(task => task.id !== idOfElement);
+    console.log(tasks);
+    localStorage.setItem('taskList', JSON.stringify(tasks));
   }
 }
 
@@ -479,13 +562,6 @@ class Validation {
       isStatusValid;
 
     if (isFormValid) {
-      // To fix the Modal from not closing after click Submit button (from e.preventDefault());
-      editSaveBtn.setAttribute('data-bs-dismiss', 'modal');
-      editSaveBtn.click();
-      // To remove this attribute from the modal (IIFE)
-      (() => {
-        editSaveBtn.setAttribute('data-bs-dismiss', '');
-      })();
       valid = true;
     }
     return valid;
@@ -633,7 +709,7 @@ editResetBtn.addEventListener('click', () => {
   document.getElementById('formEditTask').reset();
 });
 
-// Event: Listen to event of Delete OR Edit OR Mark as Done
+// Event: Listen to event of "Delete" OR "Edit" OR "Mark as Done" from each Task Card
 showTaskList.addEventListener('click', e => {
   if (e.target.classList.contains('delete')) {
     return null;
@@ -643,3 +719,5 @@ showTaskList.addEventListener('click', e => {
     TaskManager.editTask(e);
   }
 });
+
+// TaskManager.getTasksWithStatus('done');
