@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="./css/index.css">
   </head>
   <body>
+    <!-- ----------------------------------------------- --Show NavBar --------------------------------------------------- -->
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
           <a class="navbar-brand fs-1 px-5" href="#">To Do List</a>
@@ -39,7 +40,6 @@
         <p class="px-5 fs-4" id="showDate"><span class="fw-semibold">Current Date : </span></p>
         <p class="px-5 fs-4" id="showTime"><span class="fw-semibold">Time : </span></p>
     </div>
-    <!-- Show current date and time -->
 
       
     <!-- ------------------------------------------Start main of the page-- ------------------------------------------------->
@@ -205,42 +205,38 @@
       <!-- End of Edit Modal -->
 
 
-      
-    <!-- new card list group for landing the add page -->
-    <div class="container-fluid pt-4 pb-5 px-5">
-
-      <div class="row gy-3 pb-5 text-center" id="showTaskList">
+      <!-- All task cards will landing here in each column, depend on the its status -->
+      <div class="container-fluid pt-4 pb-5 px-5">
+        <div class="row gy-3 pb-5 text-center" id="showTaskList">
           <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
               <div class="border border-dark py-4 mb-2 rounded todoHeading">Todo</div>
               <div id="todoColumn"></div>
-              <!-- Task will be added here -->
+              <!-- Todo status will be added here -->
           </div>
           <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 ">
               <div class="border border-dark py-4 mb-2 rounded inProgressHeading">In Progress</div>
               <div id="inProgressColumn"></div>
-              <!--Progress Task will be added here -->
+              <!-- Progress status will be added here -->
           </div>
           <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
               <div class="border border-dark py-4 mb-2 rounded reviewHeading">Review</div>
               <div id="reviewColumn"></div>
-              <!-- Review Task will be added here -->
+              <!-- Review status will be added here -->
           </div>
           <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">
               <div class="border border-dark py-4 mb-2 rounded doneHeading">Done</div>
               <div id="doneColumn"></div>
-              <!-- Finished (done) Task will be added here -->
+              <!-- Finished (done) status will be added here -->
           </div>
       </div>
-
-  </div>
+    </div>
     <!-- End of main page -->
 
+
     <!-- Footer -->
-    <!-- <div class="container-fluid text-center px-0"> -->
-        <footer>
-            <div class="mt-5 py-3 bg-light text-center">&copy; Copyright 2022 : To do list Application by Waranya, Dmitry, Kana</div>
-        </footer>
-    <!-- </div> -->
+    <footer>
+      <div class="mt-5 py-3 bg-light text-center">&copy; Copyright 2022 : To do list Application by Waranya, Dmitry, Kana</div>
+    </footer>
 
     <!-- JavaScript Section -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

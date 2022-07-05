@@ -8,7 +8,6 @@ const addInputStatus = document.querySelector('#addInputStatus');
 const addSubmitBtn = document.querySelector('#addSubmitBtn');
 const addResetBtn = document.querySelector('#addResetBtn');
 const addCloseModal = document.querySelector('#addCloseModal');
-
 const showTaskList = document.querySelector('#showTaskList');
 
 let editInputId = document.querySelector('#editInputId');
@@ -31,60 +30,13 @@ let editInputStatusPrev;
 const showDate = document.querySelector('#showDate');
 const showTime = document.querySelector('#showTime');
 
-// new list group
+// Select each Status column (Todo, InProgress, Review, Done)
 const todoColumn = document.querySelector('#todoColumn');
 const inProgressColumn = document.querySelector('#inProgressColumn');
 const reviewColumn = document.querySelector('#reviewColumn');
 const doneColumn = document.querySelector('#doneColumn');
 
-//Create ID (Not use, for unique reason on localStotage)
-// let myID = 0;
-
-//new taskArray
-let taskArray = [
-  {
-    id: '1',
-    name: 'zoom meeting with team',
-    description: 'zoom meeting with team at 9.15AM',
-    assignedTo: 'my team zoom meeting',
-    dueDate: '15-07-2022',
-    status: 'todo',
-  },
-  {
-    id: '2',
-    name: 'book a hotel',
-    description: 'book a hotel in the Gold Coast for a birthday',
-    assignedTo: 'my birthday',
-    dueDate: '20-07-2022',
-    status: 'in progress',
-  },
-  {
-    id: '3',
-    name: 'shopping',
-    description: 'check what to buy and make a list',
-    assignedTo: 'my birthday',
-    dueDate: '21-07-2022',
-    status: 'review',
-  },
-  {
-    id: '4',
-    name: 'car registration',
-    description: 'pay for car registration',
-    assignedTo: 'car registration',
-    dueDate: '20-06-2022',
-    status: 'done',
-  },
-  {
-    id: '5',
-    name: 'pick up from school',
-    description: 'have to arrive at 5.15PM',
-    assignedTo: 'mark timber',
-    dueDate: '06-07-2022',
-    status: 'done',
-  },
-];
-
-// task class
+// Task Class: Represents a Task Object
 class Task {
   constructor(id, name, description, assignedTo, dueDate, status) {
     this.id = id;
@@ -95,7 +47,8 @@ class Task {
     this.status = status;
   }
 }
-//task manager add the card
+
+// TaskManager Class: Represents methods in TaskManager Class
 class TaskManager {
   static getTaskListFromLocalStorage() {
     let taskList = localStorage.getItem('taskList');
@@ -108,32 +61,21 @@ class TaskManager {
   }
 
   static getAllTasks() {
-    // const tasks = taskArray;
     const tasks = TaskManager.getTaskListFromLocalStorage();
     tasks.forEach(task => TaskManager.render(task));
-    console.log({ tasks });
   }
-
-  // static addTaskToLocalStorage(task) {
-  //   const taskList = TaskManager.getTaskListFromLocalStorage();
-  //   taskList.push(task);
-  //   localStorage.setItem('taskList', JSON.stringify(taskList));
-  // }
 
   static getTasksWithStatus(status) {
     const allTasksWithSameStatus = taskArray.filter(
       task => task.status === status
     );
-    console.log({ allTasksWithSameStatus });
   }
 
+  // Add a New Task Object to localStorage
   static addTask(task) {
-    // taskArray.push(task);
     const taskList = TaskManager.getTaskListFromLocalStorage();
     taskList.push(task);
     localStorage.setItem('taskList', JSON.stringify(taskList));
-    console.log('A task added');
-    console.log({ taskArray });
   }
 
   static createTaskHTML(task) {
@@ -153,7 +95,7 @@ class TaskManager {
       <p class='card-text'><span class='fw-bold pe-3'>Due Date :</span>${
         task.dueDate
       }</p>
-      <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class=${Utility.checkColor(
+      <p class='card-text pb-3 text-capitalize'><span class='fw-bold pe-3'>Status :</span><span class=${TaskManager.checkBackgroundColor(
         task.status
       )}>${task.status}</span></p>
       <div class='col d-flex justify-content-between align-items-center'>
@@ -167,23 +109,14 @@ class TaskManager {
         <button class='btn border border-dark edit editRemoveFocus' type='submit' data-bs-toggle='modal' data-bs-target='#staticEditBackdrop'>Edit</button>
       </div>
     </div>
-</div>`;
-   // showTaskList.appendChild(divElement);
-    console.log('here is display task');
-    console.log(task.status);
+    </div>`;
+
+    // Render a Task to each status column, by checking its status
     let statusColumn = TaskManager.addToStatusColumn(task.status);
     statusColumn.appendChild(divElement);
-    console.log(task);
   }
 
-  //adding task tolocal storage
-static addTaskToLocalStorage(task) {
-  const taskList = TaskManager.getTaskListFromLocalStorage();
-  taskList.push(task);
-  localStorage.setItem('taskList', JSON.stringify(taskList));
-}
-
-  //method for status column
+  // Return ID of column, depend on Status
   static addToStatusColumn(status) {
     switch (status) {
       case 'todo':
@@ -197,13 +130,66 @@ static addTaskToLocalStorage(task) {
     }
   }
 
+  // Assign background color to Status of each Task Card
+  static checkBackgroundColor(status) {
+    switch (status) {
+      case 'todo':
+        return 'red';
+      case 'done':
+        return 'green';
+      case 'in progress':
+        return 'orange';
+      case 'review':
+        return 'blue';
+    }
+  }
+
+  // Called when Save Button on Edit-a-Task form is clicked
+  static saveEditedTask(e) {
+    e.preventDefault();
+    const taskId =
+      e.target.previousElementSibling.previousElementSibling.textContent;
+
+    let taskList = localStorage.getItem('taskList');
+    taskList = JSON.parse(taskList);
+    taskList.forEach(task => {
+      if (task.id === taskId) {
+        task.name = editInputName.value;
+        task.description = editInputDescription.value;
+        task.assignedTo = editInputAssignedTo.value;
+        task.dueDate = editInputDueDate.value;
+        task.status = editInputStatus.value;
+      }
+    });
+
+    // Save edited Task to localStorage
+    localStorage.setItem('taskList', JSON.stringify(taskList));
+
+    // To fix the Modal from not closing after click Save button (from e.preventDefault());
+    editSaveBtn.setAttribute('data-bs-dismiss', 'modal');
+    editSaveBtn.click();
+    // To remove this attribute from the modal (IIFE)
+    (() => {
+      editSaveBtn.setAttribute('data-bs-dismiss', '');
+    })();
+  }
+
+  // Called when Reset Button on Edit-a-Task form is clicked
+  static resetEditedTask(e) {
+    e.preventDefault();
+    editInputName.value = editInputNamePrev;
+    editInputDescription.value = editInputDescriptionPrev;
+    editInputAssignedTo.value = editInputAssignedToPrev;
+    editInputDueDate.value = editInputDueDatePrev;
+    editInputStatus.value = editInputStatusPrev;
+  }
+
+  // Called when Edit Button is clicked on each Task
   static editTask(e) {
     const taskId =
       e.target.previousElementSibling.previousElementSibling
         .previousElementSibling.textContent;
-    console.log({ taskId });
 
-    // const editedTask = taskArray.filter(task => task.id === taskId);
     let taskList = localStorage.getItem('taskList');
     taskList = JSON.parse(taskList);
     const editedTask = taskList.filter(task => task.id === taskId);
@@ -222,61 +208,26 @@ static addTaskToLocalStorage(task) {
     editInputStatusPrev = editedTask[0].status;
   }
 
-  static saveEditedTask(e) {
-    e.preventDefault();
-    const taskId =
-      e.target.previousElementSibling.previousElementSibling.textContent;
+  // Called when Delete Button is clicked
+  static deleteTaskFromLocalStorage(e) {
+    let tasks = TaskManager.getTaskListFromLocalStorage();
+    const idOfElement = e.target.previousElementSibling.textContent;
 
-    // taskArray.forEach(task => {
-    //   if (task.id === taskId) {
-    //     task.name = editInputName.value;
-    //     task.description = editInputDescription.value;
-    //     task.assignedTo = editInputAssignedTo.value;
-    //     task.dueDate = editInputDueDate.value;
-    //     task.status = editInputStatus.value;
-    //   }
-    // });
-
-    // console.log('Edited a task');
-    // console.log({ taskArray });
-
-    let taskList = localStorage.getItem('taskList');
-    taskList = JSON.parse(taskList);
-    taskList.forEach(task => {
-      if (task.id === taskId) {
-        task.name = editInputName.value;
-        task.description = editInputDescription.value;
-        task.assignedTo = editInputAssignedTo.value;
-        task.dueDate = editInputDueDate.value;
-        task.status = editInputStatus.value;
-      }
-    });
-
-    console.log({ taskList });
-    localStorage.setItem('taskList', JSON.stringify(taskList));
-
-    // To fix the Modal from not closing after click Save button (from e.preventDefault());
-    editSaveBtn.setAttribute('data-bs-dismiss', 'modal');
-    editSaveBtn.click();
-    // To remove this attribute from the modal (IIFE)
-    (() => {
-      editSaveBtn.setAttribute('data-bs-dismiss', '');
-    })();
+    tasks = tasks.filter(task => task.id !== idOfElement);
+    localStorage.setItem('taskList', JSON.stringify(tasks));
   }
 
-  static resetEditedTask(e) {
-    e.preventDefault();
-    editInputName.value = editInputNamePrev;
-    editInputDescription.value = editInputDescriptionPrev;
-    editInputAssignedTo.value = editInputAssignedToPrev;
-    editInputDueDate.value = editInputDueDatePrev;
-    editInputStatus.value = editInputStatusPrev;
+  // Called when Delete Button is clicked
+  static deleteTaskFromUI(elementTarget) {
+    if (elementTarget.classList.contains('delete')) {
+      elementTarget.parentElement.parentElement.parentElement.parentElement.remove();
+    }
   }
 
-  static changeTaskStatus(e) {
+  // Called when Mark-as-Done Button is clicked
+  static markAsDone(e) {
     const taskId =
       e.target.previousElementSibling.previousElementSibling.textContent;
-    console.log({ taskId });
     let taskList = localStorage.getItem('taskList');
     taskList = JSON.parse(taskList);
     taskList.forEach(task => {
@@ -284,71 +235,18 @@ static addTaskToLocalStorage(task) {
         task.status = 'done';
       }
     });
-    console.log(taskList);
     localStorage.setItem('taskList', JSON.stringify(taskList));
-    //
+
     todoColumn.innerHTML = '';
     inProgressColumn.innerHTML = '';
     reviewColumn.innerHTML = '';
     doneColumn.innerHTML = '';
+
     TaskManager.getAllTasks();
   }
-
-  static removeTaskFromUI(elementTarget) {
-    if (elementTarget.classList.contains('delete')) {
-      elementTarget.parentElement.parentElement.parentElement.parentElement.remove();
-    }
-  }
-
-  static removeTaskFromLocalStorage(e) {
-    let tasks = TaskManager.getTaskListFromLocalStorage();
-    const idOfElement = e.target.previousElementSibling.textContent;
-
-    tasks = tasks.filter(task => task.id !== idOfElement);
-    console.log(tasks);
-    localStorage.setItem('taskList', JSON.stringify(tasks));
-  }
 }
 
-static changeTaskStatus(e) {
-  const taskId =
-    e.target.previousElementSibling.previousElementSibling.textContent;
-  console.log({ taskId });
-  let taskList = localStorage.getItem('taskList');
-  taskList = JSON.parse(taskList);
-  taskList.forEach(task => {
-    if (task.id === taskId) {
-      task.status = 'done';
-    }
-  });
-  console.log(taskList);
-  localStorage.setItem('taskList', JSON.stringify(taskList));
-  //
-  todoColumn.innerHTML = '';
-  inProgressColumn.innerHTML = '';
-  reviewColumn.innerHTML = '';
-  doneColumn.innerHTML = '';
-  TaskManager.displayTaskListToUI();
-}
-
-static removeTaskFromUI(elementTarget) {
-  if (elementTarget.classList.contains('delete')) {
-    elementTarget.parentElement.parentElement.parentElement.parentElement.remove();
-  }
-}
-
-static removeTaskFromLocalStorage(e) {
-  let tasks = TaskManager.getTaskListFromLocalStorage();
-  const idOfElement = e.target.previousElementSibling.textContent;
-
-  tasks = tasks.filter(task => task.id !== idOfElement);
-  console.log(tasks);
-  localStorage.setItem('taskList', JSON.stringify(tasks));
-}
-}
-
-
-//validation part
+// Validation Class: Handles all validations
 class Validation {
   static isRequired(input) {
     return input === '' ? false : true;
@@ -364,6 +262,19 @@ class Validation {
     return input.match(pattern);
   }
 
+  static showError(input, message) {
+    const formField = input.parentElement;
+    const small = formField.querySelector('small');
+    small.textContent = message;
+  }
+
+  static showSuccess(input) {
+    const formfield = input.parentElement;
+    const small = formfield.querySelector('small');
+    small.textContent = '';
+  }
+
+  ///////////////////// Validation for Add-New-Task form /////////////////////
   static addCheckName() {
     let valid = false;
     const min = 8;
@@ -383,7 +294,6 @@ class Validation {
       Validation.showSuccess(addInputName);
       valid = true;
     }
-
     return valid;
   }
 
@@ -406,7 +316,6 @@ class Validation {
       Validation.showSuccess(addInputDescription);
       valid = true;
     }
-
     return valid;
   }
 
@@ -429,7 +338,6 @@ class Validation {
       Validation.showSuccess(addInputAssignedTo);
       valid = true;
     }
-
     return valid;
   }
 
@@ -450,7 +358,6 @@ class Validation {
       Validation.showSuccess(addInputDueDate);
       valid = true;
     }
-
     return valid;
   }
 
@@ -491,10 +398,10 @@ class Validation {
       })();
       valid = true;
     }
-
     return valid;
   }
 
+  ///////////////////// Validation for Edit-a-Task form /////////////////////
   static editCheckName() {
     let valid = false;
     const min = 8;
@@ -514,7 +421,6 @@ class Validation {
       Validation.showSuccess(editInputName);
       valid = true;
     }
-
     return valid;
   }
 
@@ -537,7 +443,6 @@ class Validation {
       Validation.showSuccess(editInputDescription);
       valid = true;
     }
-
     return valid;
   }
 
@@ -560,7 +465,6 @@ class Validation {
       Validation.showSuccess(editInputAssignedTo);
       valid = true;
     }
-
     return valid;
   }
 
@@ -596,6 +500,15 @@ class Validation {
     return valid;
   }
 
+  static resetAddFormFields() {
+    Validation.showSuccess(addInputName);
+    Validation.showSuccess(addInputDescription);
+    Validation.showSuccess(addInputAssignedTo);
+    Validation.showSuccess(addInputDueDate);
+    Validation.showSuccess(addInputStatus);
+    formAddTask.reset();
+  }
+
   static validateEditTaskForm() {
     let valid = false;
     let isNameValid = Validation.editCheckName(),
@@ -616,31 +529,11 @@ class Validation {
     }
     return valid;
   }
-
-  static showError(input, message) {
-    const formField = input.parentElement;
-    const small = formField.querySelector('small');
-    small.textContent = message;
-  }
-
-  static showSuccess(input) {
-    const formfield = input.parentElement;
-    const small = formfield.querySelector('small');
-    small.textContent = '';
-  }
-
-  static resetAddFormFields() {
-    Validation.showSuccess(addInputName);
-    Validation.showSuccess(addInputDescription);
-    Validation.showSuccess(addInputAssignedTo);
-    Validation.showSuccess(addInputDueDate);
-    Validation.showSuccess(addInputStatus);
-    formAddTask.reset();
-  }
 }
 
-// Utility Class: Provides Utility Methods
+// Utility Class: Provides utility methods
 class Utility {
+  // Create an unique ID (Example : '108c3ec7-4c38-48d2-91e8-4475b43d806c)
   static create_UUID() {
     var dt = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
@@ -658,8 +551,6 @@ class Utility {
     const date = new Date();
     const today =
       date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-    // const dateTextNode = document.createTextNode(today);
-
     const myDateSpan = document.createElement('span');
     myDateSpan.textContent = today;
     return myDateSpan;
@@ -667,43 +558,26 @@ class Utility {
 
   static showTime() {
     const date = new Date();
-    // const timeTextNode = document.createTextNode(date.toLocaleTimeString());
-
     const myTimeSpan = document.createElement('span');
     myTimeSpan.textContent = date.toLocaleTimeString();
     return myTimeSpan;
   }
-
-  static checkColor(status) {
-    switch (status) {
-      case 'todo':
-        return 'red';
-      case 'done':
-        return 'green';
-      case 'in progress':
-        return 'orange';
-      case 'review':
-        return 'blue';
-    }
-  }
 }
 
-//////////////////////////////////////////////////// All event section /////////////////////////////////////////////////////
+///////////////////////////////////////////////////////// ALL EVENT SECTIONS /////////////////////////////////////////////////////////
 
-// Show Date and Time when page load
+// Display all Tasks on screen when page is loaded
+document.addEventListener('DOMContentLoaded', TaskManager.getAllTasks);
+
+// Display Date and Time when page is load
 showDate.appendChild(Utility.showDate());
 showTime.appendChild(Utility.showTime());
 
-// Event: Display TodoList on the screen
-document.addEventListener('DOMContentLoaded', TaskManager.getAllTasks);
-
-// All about Adding Form Events
-// Event: Adding Submit Form
+// Handle when Submit button on Add-New-Task form is clicked
 formAddTask.addEventListener('submit', e => {
   e.preventDefault();
   const isAddFormValid = Validation.validateAddTaskForm();
   if (isAddFormValid) {
-    // const id = myID++;
     const id = Utility.create_UUID();
     const name = addInputName.value;
     const description = addInputDescription.value;
@@ -711,36 +585,24 @@ formAddTask.addEventListener('submit', e => {
     const dueDate = addInputDueDate.value;
     const status = addInputStatus.value;
 
-    // For JSON object
-    // const taskJSON = {
-    //   id: id,
-    //   name: name,
-    //   description: description,
-    //   assignedTo: assignedTo,
-    //   dueDate: dueDate,
-    //   status: status,
-    // };
-
-    //For Task Object
     const task = new Task(id, name, description, assignedTo, dueDate, status);
 
-    //Add a task object to taskArray
+    // Add a New Task Object to localStorage and render on the screen
     TaskManager.addTask(task);
     TaskManager.createTaskHTML(task);
 
-    //Reset the add form
+    // Reset Add-New-Task form
     Validation.resetAddFormFields();
   }
 });
 
-// Event: Click on Reset Button on Add Modal
+// Handle when Reset button on Add-New-Task form is clicked
 addResetBtn.addEventListener('click', Validation.resetAddFormFields);
 
-// Event: Click on X Button on Add Modal
+// Handle when X button on Add-New-Task form is clicked
 addCloseModal.addEventListener('click', Validation.resetAddFormFields);
 
-//////////////// All about Editing Form Events ////////////////////
-// Event: Save Edited Task
+// Handle when Save Button on Edit-a-Task form is clicked
 editSaveBtn.addEventListener('click', e => {
   e.preventDefault();
   const isEditFormValid = Validation.validateEditTaskForm();
@@ -754,20 +616,17 @@ editSaveBtn.addEventListener('click', e => {
   }
 });
 
-// Event: Reset to Prev Data of a Task
-editResetBtn.addEventListener('click', () => {
-  document.getElementById('formEditTask').reset();
-});
+// Handle when Reset Button on Edit-a-Task form is clicked
+editResetBtn.addEventListener('click', TaskManager.resetEditedTask);
 
-// Event: Listen to event of "Delete" OR "Edit" OR "Mark as Done" from each Task Card
+// Listen to events from each Task Card (Delete or Mark as Done or Edit button is clicked)
 showTaskList.addEventListener('click', e => {
   if (e.target.classList.contains('delete')) {
-    return null;
+    TaskManager.deleteTaskFromUI(e.target);
+    TaskManager.deleteTaskFromLocalStorage(e);
   } else if (e.target.classList.contains('taskStatus')) {
-    return null;
+    TaskManager.markAsDone(e);
   } else if (e.target.classList.contains('edit')) {
     TaskManager.editTask(e);
   }
 });
-
-// TaskManager.getTasksWithStatus('done');
