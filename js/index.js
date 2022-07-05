@@ -9,6 +9,8 @@ const addSubmitBtn = document.querySelector('#addSubmitBtn');
 const addResetBtn = document.querySelector('#addResetBtn');
 const addCloseModal = document.querySelector('#addCloseModal');
 
+const showTaskList = document.querySelector('#showTaskList');
+
 let editInputId = document.querySelector('#editInputId');
 let editInputName = document.querySelector('#editInputName');
 let editInputDescription = document.querySelector('#editInputDescription');
@@ -43,17 +45,17 @@ let taskArray = [
   {
     id: '1',
     name: 'zoom meeting with team',
-    description: 'at 9.15AM',
-    assignedTo: 'my team',
-    dueDate: '07-15-2022',
+    description: 'zoom meeting with team at 9.15AM',
+    assignedTo: 'my team zoom meeting',
+    dueDate: '15-07-2022',
     status: 'todo',
   },
   {
     id: '2',
     name: 'book a hotel',
-    description: 'in the Gold Coast for a birthday',
+    description: 'book a hotel in the Gold Coast for a birthday',
     assignedTo: 'my birthday',
-    dueDate: '07-20-2022',
+    dueDate: '20-07-2022',
     status: 'in progress',
   },
   {
@@ -61,15 +63,15 @@ let taskArray = [
     name: 'shopping',
     description: 'check what to buy and make a list',
     assignedTo: 'my birthday',
-    dueDate: '07-21-2022',
+    dueDate: '21-07-2022',
     status: 'review',
   },
   {
     id: '4',
     name: 'car registration',
     description: 'pay for car registration',
-    assignedTo: 'car',
-    dueDate: '06-20-2022',
+    assignedTo: 'car registration',
+    dueDate: '20-06-2022',
     status: 'done',
   },
   {
@@ -77,7 +79,7 @@ let taskArray = [
     name: 'pick up from school',
     description: 'have to arrive at 5.15PM',
     assignedTo: 'mark timber',
-    dueDate: '07-06-2022',
+    dueDate: '06-07-2022',
     status: 'done',
   },
 ];
@@ -166,10 +168,20 @@ class TaskManager {
       </div>
     </div>
 </div>`;
-
+   // showTaskList.appendChild(divElement);
+    console.log('here is display task');
+    console.log(task.status);
     let statusColumn = TaskManager.addToStatusColumn(task.status);
     statusColumn.appendChild(divElement);
+    console.log(task);
   }
+
+  //adding task tolocal storage
+static addTaskToLocalStorage(task) {
+  const taskList = TaskManager.getTaskListFromLocalStorage();
+  taskList.push(task);
+  localStorage.setItem('taskList', JSON.stringify(taskList));
+}
 
   //method for status column
   static addToStatusColumn(status) {
@@ -297,6 +309,44 @@ class TaskManager {
     localStorage.setItem('taskList', JSON.stringify(tasks));
   }
 }
+
+static changeTaskStatus(e) {
+  const taskId =
+    e.target.previousElementSibling.previousElementSibling.textContent;
+  console.log({ taskId });
+  let taskList = localStorage.getItem('taskList');
+  taskList = JSON.parse(taskList);
+  taskList.forEach(task => {
+    if (task.id === taskId) {
+      task.status = 'done';
+    }
+  });
+  console.log(taskList);
+  localStorage.setItem('taskList', JSON.stringify(taskList));
+  //
+  todoColumn.innerHTML = '';
+  inProgressColumn.innerHTML = '';
+  reviewColumn.innerHTML = '';
+  doneColumn.innerHTML = '';
+  TaskManager.displayTaskListToUI();
+}
+
+static removeTaskFromUI(elementTarget) {
+  if (elementTarget.classList.contains('delete')) {
+    elementTarget.parentElement.parentElement.parentElement.parentElement.remove();
+  }
+}
+
+static removeTaskFromLocalStorage(e) {
+  let tasks = TaskManager.getTaskListFromLocalStorage();
+  const idOfElement = e.target.previousElementSibling.textContent;
+
+  tasks = tasks.filter(task => task.id !== idOfElement);
+  console.log(tasks);
+  localStorage.setItem('taskList', JSON.stringify(tasks));
+}
+}
+
 
 //validation part
 class Validation {
