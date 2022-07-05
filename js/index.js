@@ -9,6 +9,8 @@ const addSubmitBtn = document.querySelector('#addSubmitBtn');
 const addResetBtn = document.querySelector('#addResetBtn');
 const addCloseModal = document.querySelector('#addCloseModal');
 
+const showTaskList = document.querySelector('#showTaskList');
+
 let editInputId = document.querySelector('#editInputId');
 let editInputName = document.querySelector('#editInputName');
 let editInputDescription = document.querySelector('#editInputDescription');
@@ -144,10 +146,20 @@ class TaskManager {
       </div>
     </div>
 </div>`;
-
+   // showTaskList.appendChild(divElement);
+    console.log('here is display task');
+    console.log(task.status);
     let statusColumn = TaskManager.addToStatusColumn(task.status);
     statusColumn.appendChild(divElement);
+    console.log(task);
   }
+
+  //adding task tolocal storage
+static addTaskToLocalStorage(task) {
+  const taskList = TaskManager.getTaskListFromLocalStorage();
+  taskList.push(task);
+  localStorage.setItem('taskList', JSON.stringify(taskList));
+}
 
   //method for status column
   static addToStatusColumn(status) {
@@ -214,6 +226,44 @@ class TaskManager {
     editInputStatus.value = editInputStatusPrev;
   }
 }
+
+static changeTaskStatus(e) {
+  const taskId =
+    e.target.previousElementSibling.previousElementSibling.textContent;
+  console.log({ taskId });
+  let taskList = localStorage.getItem('taskList');
+  taskList = JSON.parse(taskList);
+  taskList.forEach(task => {
+    if (task.id === taskId) {
+      task.status = 'done';
+    }
+  });
+  console.log(taskList);
+  localStorage.setItem('taskList', JSON.stringify(taskList));
+  //
+  todoColumn.innerHTML = '';
+  inProgressColumn.innerHTML = '';
+  reviewColumn.innerHTML = '';
+  doneColumn.innerHTML = '';
+  TaskManager.displayTaskListToUI();
+}
+
+static removeTaskFromUI(elementTarget) {
+  if (elementTarget.classList.contains('delete')) {
+    elementTarget.parentElement.parentElement.parentElement.parentElement.remove();
+  }
+}
+
+static removeTaskFromLocalStorage(e) {
+  let tasks = TaskManager.getTaskListFromLocalStorage();
+  const idOfElement = e.target.previousElementSibling.textContent;
+
+  tasks = tasks.filter(task => task.id !== idOfElement);
+  console.log(tasks);
+  localStorage.setItem('taskList', JSON.stringify(tasks));
+}
+}
+
 
 //validation part
 class Validation {
